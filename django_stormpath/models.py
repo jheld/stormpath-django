@@ -51,8 +51,11 @@ def get_default_is_active():
     disabled.
     """
     directory = APPLICATION.default_account_store_mapping.account_store
-    account_store = directory.default_account_store_mapping.account_store
-    verif_email = account_store.account_creation_policy.verification_email_status
+    if hasattr(directory, 'default_account_store_mapping'):
+        account_creation_policy = directory.default_account_store_mapping.account_store.account_creation_policy
+    else:
+        account_creation_policy = directory.account_creation_policy
+    verif_email = account_creation_policy.verification_email_status
     return verif_email == AccountCreationPolicy.EMAIL_STATUS_DISABLED
 
 
